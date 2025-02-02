@@ -24,7 +24,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerDao custDaoImpl;
 	
-	public void invokeCustomerDetails(Customer custBody) throws ValidationException {
+	public void saveCustomerDetails(Customer custBody) throws ValidationException {
 		
 		System.out.println("To update in employee method");
 		Boolean CustValidation   = false;
