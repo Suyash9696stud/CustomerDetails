@@ -24,18 +24,27 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+
 	
 	
 	@PostMapping(value = "/CustomerDetails")
 	public ResponseEntity<CustomerResponse> getStatus(@RequestBody Customer custBody) throws ValidationException{
-		
-	 
-		System.out.println("Request received");
-		ResponseEntity<CustomerResponse> entity = null;
-		CustomerResponse custResp = new CustomerResponse();
-		customerService.invokeCustomerDetails(custBody);		
-		
-		return entity;
+		CustomerResponse customerResponse = new CustomerResponse();
+	 try{
+		 customerService.invokeCustomerDetails(custBody);
+		 customerResponse.setCustomerId(String.valueOf(custBody.getCustId()));
+		 customerResponse.setMessage("Customer details saved successfully");
+			return new ResponseEntity<>(customerResponse,HttpStatus.OK);
+	 }catch (ValidationException e){
+		 customerResponse.setCustomerId("customer validation Error for:"+String.valueOf(custBody.getCustId()));
+		 customerResponse.setMessage(e.getMessage());
+		 return new ResponseEntity<>(customerResponse,HttpStatus.BAD_REQUEST);
+	 }
+	 catch (Exception ex){
+		 customerResponse.setCustomerId("Error:"+String.valueOf(custBody.getCustId()));
+		 customerResponse.setMessage(ex.getMessage());
+		 return new ResponseEntity<>(customerResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+	 }
 		
 	}
 	
