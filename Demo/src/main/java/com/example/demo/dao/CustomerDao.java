@@ -20,6 +20,9 @@ public class CustomerDao {
 	
 	@Autowired
 	private CustomerRepository custRepository;
+
+	@Autowired
+	public Customer customer;
 	
 
 	@Transactional
@@ -34,8 +37,7 @@ public class CustomerDao {
 
 
 	public Customer fetchDbdetails(long custId) throws Exception {
-		
-		Customer customer = new Customer();
+
 		try {
 			Optional<Customer> cust = custRepository.findById(custId);
 			System.out.println("Customer Details --> "+cust.toString());
