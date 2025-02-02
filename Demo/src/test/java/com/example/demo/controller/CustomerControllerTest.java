@@ -29,10 +29,10 @@ class CustomerControllerTest {
         Customer mockCustomer = new Customer(101L, "John", "Doe", null);// Sample ID
 
         // Mock Service Behavior (No Exception)
-        doNothing().when(customerService).invokeCustomerDetails(mockCustomer);
+        doNothing().when(customerService).saveCustomerDetails(mockCustomer);
 
         // Call the method
-        ResponseEntity<CustomerResponse> response = customerController.getStatus(mockCustomer);
+        ResponseEntity<CustomerResponse> response = customerController.addCustomer(mockCustomer);
 
         // Assertions
         assertNotNull(response);
@@ -42,7 +42,7 @@ class CustomerControllerTest {
         assertEquals("Customer details saved successfully", response.getBody().getMessage());
 
         // Verify Service Method was Called Once
-        verify(customerService, times(1)).invokeCustomerDetails(mockCustomer);
+        verify(customerService, times(1)).saveCustomerDetails(mockCustomer);
     }
 
     // **2. Test Case: ValidationException Handling**
@@ -52,10 +52,10 @@ class CustomerControllerTest {
         Customer mockCustomer = new Customer(102L, "John", "Doe", null);
         // Mock Service to Throw ValidationException
         doThrow(new ValidationException(HttpStatus.BAD_REQUEST,"Invalid customer data"))
-                .when(customerService).invokeCustomerDetails(mockCustomer);
+                .when(customerService).saveCustomerDetails(mockCustomer);
 
         // Call the method
-        ResponseEntity<CustomerResponse> response = customerController.getStatus(mockCustomer);
+        ResponseEntity<CustomerResponse> response = customerController.addCustomer(mockCustomer);
 
         // Assertions
         assertNotNull(response);
@@ -64,7 +64,7 @@ class CustomerControllerTest {
         assertEquals("customer validation Error for:102", response.getBody().getCustomerId());
 
         // Verify Service Method was Called Once
-        verify(customerService, times(1)).invokeCustomerDetails(mockCustomer);
+        verify(customerService, times(1)).saveCustomerDetails(mockCustomer);
     }
 
     // **3. Test Case: General Exception Handling**
@@ -75,10 +75,10 @@ class CustomerControllerTest {
 
         // Mock Service to Throw General Exception
         doThrow(new RuntimeException("Unexpected error"))
-                .when(customerService).invokeCustomerDetails(mockCustomer);
+                .when(customerService).saveCustomerDetails(mockCustomer);
 
         // Call the method
-        ResponseEntity<CustomerResponse> response = customerController.getStatus(mockCustomer);
+        ResponseEntity<CustomerResponse> response = customerController.addCustomer(mockCustomer);
 
         // Assertions
         assertNotNull(response);
@@ -88,6 +88,6 @@ class CustomerControllerTest {
         assertEquals("Unexpected error", response.getBody().getMessage());
 
         // Verify Service Method was Called Once
-        verify(customerService, times(1)).invokeCustomerDetails(mockCustomer);
+        verify(customerService, times(1)).saveCustomerDetails(mockCustomer);
     }
 }

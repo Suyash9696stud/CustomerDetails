@@ -15,10 +15,11 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor
 public class Customer {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long custId;
 	
 	@Column(name = "first_name" )
